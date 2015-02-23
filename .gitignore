@@ -17,6 +17,7 @@ Assets/Standard Assets/
 /*.booproj
 Assets/Scenes/main/*ightmap*.*
 Assets/Scenes/main/*.exr
+Assets/Editor/ImageEffects/*.*
 
 #Unity3D Generated File On Crash Reports
 sysinfo.txt

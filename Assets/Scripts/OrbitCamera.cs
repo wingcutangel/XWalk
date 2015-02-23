@@ -7,7 +7,7 @@ public class OrbitCamera : MonoBehaviour
 	
 	//The default distance of the camera from the target.
 	public float _cameraRadius = 5f;
-	public float _distance = 20.0f;
+	public float _distance = 0f;
 	public bool checkCollisions;
 	//Control the speed of zooming and dezooming.
 	public float _zoomStep = 1.0f;
@@ -32,6 +32,7 @@ public class OrbitCamera : MonoBehaviour
 	private float _dx = 0.0f;
 	private float _dy = 0.0f;
 	private bool cameraFree = true;
+	private bool customCamera = false;
 		
 	//Distance vector. 
 	private Vector3 _distanceVector;
@@ -45,8 +46,16 @@ public class OrbitCamera : MonoBehaviour
 	{
 		if (_target != null) {
 			Vector2 angles = _target.transform.localEulerAngles;
-			_x = angles.y;
-			_y = 0f;
+			if(!_target.GetComponent<CameraPoint>())
+			{
+				_x = angles.y;
+				_y = 0f;
+			} else {
+				CameraPoint cp = _target.GetComponent<CameraPoint>();
+				_x = angles.y;
+				_y = cp.startAngle;
+				_distance = cp.startDistance;
+			}
 		} else {
 			_target = new GameObject("CameraTarget");
 			_x = 0f;
@@ -105,6 +114,14 @@ public class OrbitCamera : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit)){
 				switchFocusPoint(hit.point);
+				if (customCamera){
+					CameraPoint cp = _target.GetComponent<CameraPoint>();
+					_maxDistance = cp.maxDistance;
+					_minDistance = cp.minDistance;
+					_highAngle = cp.maxAngle;
+					_lowAngle = cp.minAngle;
+					customCamera = false;
+				}
 			}
 		}
 	}
@@ -247,6 +264,11 @@ public class OrbitCamera : MonoBehaviour
 		StopCoroutine("moveCameraFocus");
 		StartCoroutine("moveCameraFocus", newTarget);
 	}
+
+	public void switchFocusPoint(CameraPoint newPoint){
+		StopCoroutine("moveCameraFocus");
+		StartCoroutine("moveCameraFocus", newPoint);
+	}
 	
 	IEnumerator moveCameraFocus(Vector3 newPosition){
 
@@ -263,6 +285,36 @@ public class OrbitCamera : MonoBehaviour
 
 			_focusPosition = newFocus;
 //			_target = newTarget;
+		}
+	}
+
+	IEnumerator moveCameraFocus(CameraPoint newPoint){
+		customCamera = true;
+
+		Vector3 oldFocus = _focusPosition;
+		Vector3 newFocus = newPoint.gameObject.transform.position;
+		float oldDistance = _distance;
+		float oldAngle = _y;
+		Quaternion oldHeading = transform.rotation;
+		oldHeading.eulerAngles = new Vector3(0f, oldHeading.eulerAngles.y,0f);
+		float startTime = Time.time;
+		float travelTime = (newFocus-_focusPosition).magnitude / 10f;
+		if (travelTime > 0.1f){
+			while(Time.time <= startTime + travelTime){
+				float factor = (Time.time - startTime)/travelTime;
+				_focusPosition = Vector3.Lerp(oldFocus, newFocus, Mathf.SmoothStep(0f, 1f, factor));
+				_x = Quaternion.Slerp(oldHeading, newPoint.gameObject.transform.rotation, Mathf.SmoothStep(0f, 1f, factor)).eulerAngles.y;
+				_y = Mathf.Lerp(oldAngle, newPoint.startAngle, Mathf.SmoothStep(0f, 1f, factor));
+				_distance = Mathf.Lerp(oldDistance, newPoint.startDistance, Mathf.SmoothStep(0f, 1f, factor));
+				yield return null;
+			}
+			
+			_focusPosition = newFocus;
+			_maxDistance = newPoint.maxDistance;
+			_minDistance = newPoint.minDistance;
+			_highAngle = newPoint.maxAngle;
+			_lowAngle = newPoint.minAngle;
+			//			_target = newTarget;
 		}
 	}
 
