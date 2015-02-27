@@ -6,15 +6,30 @@ public class InterfaceController : MonoBehaviour {
 	public float sidePanelOutTime = 0.5f;
 	public RectTransform sidePanel;
 	public Button menuButton;
-	private bool sidePanelVisible = false;
+	public OrbitCamera mainCamera;
+	public CameraPoint mapView;
+	public int lastPinGroup;
+	public GameObject zoomedInButtons;
+	public GameObject walkButtons;
 	// Use this for initialization
-	void Start () {
-	
+	public void returnToMenu(){
+		mainCamera.switchFocusPoint (mapView);
+		slidePanelOut ();
+		GetComponent<GUIPanelScript> ().switchToPinGroup (lastPinGroup);
+		zoomedInButtons.GetComponent<CanvasGroupState> ().disable ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void showZoomedInButtons(){
+		walkButtons.GetComponent<CanvasGroupState> ().disable ();
+		zoomedInButtons.GetComponent<CanvasGroupState> ().enable ();
+		slidePanelIn ();
+		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
+	}
+	public void showWalkButtons(){
+		zoomedInButtons.GetComponent<CanvasGroupState> ().disable ();
+		walkButtons.GetComponent<CanvasGroupState> ().enable ();
+		slidePanelIn ();
+		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
 	public void slidePanelOut(){
 		StopCoroutine("IEslidePanelOut");

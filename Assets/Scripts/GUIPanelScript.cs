@@ -71,5 +71,8 @@ public class GUIPanelScript : MonoBehaviour {
 				stateControllers[group].enable();
 			}
 		}
+		if (group != -1) {
+			GetComponent<InterfaceController>().lastPinGroup = group;
+		}
 	}
 }
