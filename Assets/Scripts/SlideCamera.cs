@@ -46,7 +46,7 @@ public class SlideCamera : MonoBehaviour {
 		Vector3 rayOrigin = dummyPosition + (transform.right * dX) + (transform.up * dY); 
 		rayOrigin.y = 1f;
 		RaycastHit hit;
-		if(Physics.Raycast(rayOrigin, transform.forward, out hit, distance + 5f, lm ))
+		if(Physics.Raycast(rayOrigin, transform.forward, out hit, distance + 500f, lm ))
 		{
 			MeshCollider meshCollider = hit.collider as MeshCollider;
 			if (meshCollider == null || meshCollider.sharedMesh == null)

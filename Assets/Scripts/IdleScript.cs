@@ -7,8 +7,10 @@ public class IdleScript : MonoBehaviour {
 	float elapsedTime = 0f;
 	public float idleLimit = 5f;
 	private Action updateTimer;
+	CanvasGroupState cgs;
 	// Use this for initialization
 	void Start () {
+		cgs = GetComponent<CanvasGroupState> ();
 		updateTimer += countTime;
 	}
 	
@@ -43,22 +45,21 @@ public class IdleScript : MonoBehaviour {
 		if (elapsedTime >= idleLimit){
 			openAbout();
 		}
-		if (Input.GetButtonDown("Fire1")){
+		if (Input.GetButtonDown("Fire1") || Input.touchCount > 0){
 			elapsedTime = 0f;
 		}
 	}
 
 	public void openAbout(){
-		StopCoroutine("showAbout");
-		StartCoroutine("showAbout", true);
+		cgs.enable ();
+		StartCoroutine (Camera.main.GetComponent<OrbitCamera> ().autoOrbit (3f));
 		updateTimer -= countTime;
 		updateTimer += closeAbout;
 	}
 
 	private void closeAbout(){
-		if (Input.GetButtonDown("Fire1")){
-			StopCoroutine("showAbout");
-			StartCoroutine("showAbout", false);
+		if (Input.GetButtonDown("Fire1") || Input.touchCount > 0){
+			cgs.disable();
 			updateTimer -= closeAbout;
 			elapsedTime = 0f;
 			updateTimer += countTime;

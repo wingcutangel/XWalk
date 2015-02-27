@@ -33,6 +33,7 @@ public class OrbitCamera : MonoBehaviour
 	private float _dy = 0.0f;
 	private bool cameraFree = true;
 	private bool customCamera = false;
+	private bool bAutoOrbit;
 		
 	//Distance vector. 
 	private Vector3 _distanceVector;
@@ -66,6 +67,7 @@ public class OrbitCamera : MonoBehaviour
 		_focusPosition = _target.transform.position;
 
 		Input.gyro.enabled = true;
+		StartCoroutine(autoOrbit(3f));
 	}
 
 //	void Awake()
@@ -133,11 +135,12 @@ public class OrbitCamera : MonoBehaviour
 	void RotateControls()
 	{
 //		if ( GUIUtility.hotControl == 0 && Input.GetButton("Fire1") && cameraFree == true)
-		if ( GUIUtility.hotControl == 0 && Input.touchCount == 1 && cameraFree == true)
+		if ( GUIUtility.hotControl == 0 && Input.touchCount == 1 )//&& cameraFree == true)
 		{
+			bAutoOrbit = false;
 #if UNITY_ANDROID
-			_dx = Input.GetTouch(0).deltaPosition.x/10  * _xSpeed;
-			_dy = -Input.GetTouch(0).deltaPosition.y/10 * _ySpeed;
+			_dx = Input.GetTouch(0).deltaPosition.x/10  * _xSpeed * Time.deltaTime * 20;
+			_dy = -Input.GetTouch(0).deltaPosition.y/10 * _ySpeed * Time.deltaTime * 20;
 #endif
 #if (!UNITY_ANDROID)
 
@@ -232,11 +235,11 @@ public class OrbitCamera : MonoBehaviour
 
 				if ( deltaMagnitudeDiff < 0.0f )
 				{
-					zoomTarget -= _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff);
+					zoomTarget -= _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
 				}
 				else if ( deltaMagnitudeDiff > 0.0f )
 				{
-					zoomTarget += _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff);
+					zoomTarget += _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
 				}
 			}
 #endif
@@ -255,6 +258,15 @@ public class OrbitCamera : MonoBehaviour
 		}
 	}
 
+	public IEnumerator autoOrbit(float speed){
+		bAutoOrbit = true;
+		cameraFree = false;
+		while (bAutoOrbit) {
+			_xtarget += speed * Time.deltaTime;
+			yield return null;
+		}
+		cameraFree = true;
+	}
 	public void switchFocusPoint(GameObject newTarget){
 		StopCoroutine("moveCameraFocus");
 		StartCoroutine("moveCameraFocus", newTarget.transform.position);
@@ -290,7 +302,10 @@ public class OrbitCamera : MonoBehaviour
 
 	IEnumerator moveCameraFocus(CameraPoint newPoint){
 		customCamera = true;
-
+		_maxDistance = Mathf.Max(newPoint.maxDistance,_maxDistance);
+		_minDistance = Mathf.Min(newPoint.minDistance, _minDistance);
+		_highAngle = Mathf.Max(newPoint.maxAngle, _highAngle);
+		_lowAngle = Mathf.Min(newPoint.minAngle, _lowAngle);
 		Vector3 oldFocus = _focusPosition;
 		Vector3 newFocus = newPoint.gameObject.transform.position;
 		float oldDistance = _distance;
@@ -300,8 +315,9 @@ public class OrbitCamera : MonoBehaviour
 		float startTime = Time.time;
 		float travelTime = (newFocus-_focusPosition).magnitude / 10f;
 		if (travelTime > 0.1f){
+			float factor;
 			while(Time.time <= startTime + travelTime){
-				float factor = (Time.time - startTime)/travelTime;
+				factor = (Time.time - startTime)/travelTime;
 				_focusPosition = Vector3.Lerp(oldFocus, newFocus, Mathf.SmoothStep(0f, 1f, factor));
 				_x = Quaternion.Slerp(oldHeading, newPoint.gameObject.transform.rotation, Mathf.SmoothStep(0f, 1f, factor)).eulerAngles.y;
 				_y = Mathf.Lerp(oldAngle, newPoint.startAngle, Mathf.SmoothStep(0f, 1f, factor));
@@ -314,7 +330,6 @@ public class OrbitCamera : MonoBehaviour
 			_minDistance = newPoint.minDistance;
 			_highAngle = newPoint.maxAngle;
 			_lowAngle = newPoint.minAngle;
-			//			_target = newTarget;
 		}
 	}
 

@@ -18,14 +18,14 @@ Material:
         first:
           name: _Tex
         second:
-          m_Texture: {fileID: 8900000, guid: ddd37d712d47be74083c3c0edf99bca3, type: 3}
+          m_Texture: {fileID: 8900000, guid: ea39b45cd70733f4389d21fe4b19e539, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
           name: _Exposure
-        second: 1
+        second: 1.10000002
       data:
         first:
           name: _Rotation
@@ -34,4 +34,4 @@ Material:
       data:
         first:
           name: _Tint
-        second: {r: .5, g: .5, b: .5, a: .501960814}
+        second: {r: .397383243, g: .431366295, b: .514705896, a: .501960814}

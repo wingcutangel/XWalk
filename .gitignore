@@ -15,7 +15,9 @@ Assets/Standard Assets/
 /*.userprefs
 /*.pidb
 /*.booproj
-Assets/Scenes/main/*ightmap*.*
+*ightmap*.*
+*ReflectionProbe*
+*.apk
 Assets/Scenes/main/*.exr
 Assets/Editor/ImageEffects/*.*
 
