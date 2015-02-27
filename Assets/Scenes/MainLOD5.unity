@@ -687,7 +687,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: .0469999984, g: .0430000015, b: .0350000001, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SkyboxMaterial: {fileID: 2100000, guid: 32b4a00a00a62cd4a8e0973e5e50ca29, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: f76e634b967cbd24588f330e3187bc04, type: 2}
   m_HaloStrength: .5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -730,7 +730,7 @@ LightmapSettings:
     m_TextureCompression: 0
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
-  m_LightmapSnapshot: {fileID: 112000000, guid: f461ac569928a534298e844b6ec02bae,
+  m_LightmapSnapshot: {fileID: 112000000, guid: 5e691c8714148aa46a743e3eb3ce1d7d,
     type: 2}
   m_RuntimeCPUUsage: 75
 --- !u!196 &5
