@@ -3195,7 +3195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axesToUse: 0
-  controlStyle: 0
+  controlStyle: 1
   horizontalAxisName: Horizontal
   verticalAxisName: Vertical
   Xsensitivity: 1
@@ -16538,6 +16538,8 @@ MonoBehaviour:
   mainCam: {fileID: 1506759455}
   execCam: {fileID: 2100872362}
   screenFader: {fileID: 1984436984}
+  WalkCamPrefab: {fileID: 0}
+  walkControls: {fileID: 0}
 --- !u!4 &697698647
 Transform:
   m_ObjectHideFlags: 0
@@ -18429,7 +18431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &768838237
 Transform:
   m_ObjectHideFlags: 0
@@ -52475,7 +52477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axesToUse: 0
-  controlStyle: 0
+  controlStyle: 1
   horizontalAxisName: Mouse X
   verticalAxisName: Mouse Y
   Xsensitivity: .5
