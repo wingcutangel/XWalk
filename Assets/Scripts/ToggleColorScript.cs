@@ -14,11 +14,12 @@ public class ToggleColorScript : MonoBehaviour {
 	void Start () {
 		theText = GetComponentInChildren<Text>();
 		selectedColor = GetComponent<Button>().colors.normalColor;
-		highlightColor = GetComponent<Button>().colors.highlightedColor;
+		highlightColor = GetComponent<Button>().colors.pressedColor;
 		idleColor = theText.color;
 		idleColors = GetComponent<Button>().colors;
 		ColorBlock selectedColors = idleColors;
 		selectedColors.normalColor = highlightColor;
+		selectedColors.highlightedColor = highlightColor;
 		GetComponent<Button>().onClick.AddListener(() => {
 			foreach( Button theButton in transform.parent.GetComponentsInChildren<Button>())
 			{

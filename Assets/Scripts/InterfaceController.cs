@@ -43,14 +43,14 @@ public class InterfaceController : MonoBehaviour {
 	public void showZoomedInButtonsWOInfo(){
 		walkButtons.disable ();
 		walkButtonsWOInfo.disable ();
-		zoomedInButtons.enable ();
+		zoomedInButtonsWOInfo.enable ();
 		slidePanelIn ();
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
 	public void showWalkButtonsWOInfo(){
 		zoomedInButtons.disable ();
 		zoomedInButtonsWOInfo.disable ();
-		walkButtons.enable ();
+		walkButtonsWOInfo.enable ();
 		slidePanelIn ();
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
