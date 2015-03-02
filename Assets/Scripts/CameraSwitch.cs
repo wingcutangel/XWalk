@@ -5,8 +5,10 @@ public class CameraSwitch : MonoBehaviour {
 	public Camera mainCam;
 	public Camera execCam;
 	public Animator screenFader;
-
+	public GameObject WalkCamPrefab;
+	public GameObject walkControls;
 	private bool inExec = false;
+	private GameObject walkCam;
 	// Use this for initialization
 	void Start () {
 	
@@ -20,7 +22,13 @@ public class CameraSwitch : MonoBehaviour {
 		screenFader.SetTrigger("FadeOut");
 		yield return new WaitForSeconds(1f);
 		mainCam.gameObject.SetActive(!mainCam.gameObject.activeSelf);
-		execCam.gameObject.SetActive(!execCam.gameObject.activeSelf);
+//		execCam.gameObject.SetActive(!execCam.gameObject.activeSelf);
+		walkControls.SetActive (!walkControls.activeSelf);
+		if (walkCam) {
+			Destroy (walkCam);
+		} else {
+			walkCam = Instantiate(WalkCamPrefab, execCam.transform.position, execCam.transform.rotation) as GameObject;
+		}
 		screenFader.SetTrigger("FadeIn");
 	}
 	public void mainView(){
