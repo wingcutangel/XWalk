@@ -11,25 +11,46 @@ public class InterfaceController : MonoBehaviour {
 	public OrbitCamera mainCamera;
 	public CameraPoint mapView;
 	public int lastPinGroup;
-	public GameObject zoomedInButtons;
-	public GameObject walkButtons;
+	public CanvasGroupState zoomedInButtons;
+	public CanvasGroupState walkButtons;
+	public CanvasGroupState zoomedInButtonsWOInfo;
+	public CanvasGroupState walkButtonsWOInfo;
+	public GameObject EOInfo;
+	public GameObject OSInfo;
 	// Use this for initialization
 	public void returnToMenu(){
 		mainCamera.switchFocusPoint (mapView);
 		slidePanelOut (); 
 		GetComponent<GUIPanelScript> ().switchToPinGroup (lastPinGroup);
-		zoomedInButtons.GetComponent<CanvasGroupState> ().disable ();
+		zoomedInButtons.disable ();
+		zoomedInButtonsWOInfo.disable ();
 	}
 
 	public void showZoomedInButtons(){
-		walkButtons.GetComponent<CanvasGroupState> ().disable ();
-		zoomedInButtons.GetComponent<CanvasGroupState> ().enable ();
+		walkButtons.disable ();
+		walkButtonsWOInfo.disable ();
+		zoomedInButtons.enable ();
 		slidePanelIn ();
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
 	public void showWalkButtons(){
-		zoomedInButtons.GetComponent<CanvasGroupState> ().disable ();
-		walkButtons.GetComponent<CanvasGroupState> ().enable ();
+		zoomedInButtons.disable ();
+		zoomedInButtonsWOInfo.disable ();
+		walkButtons.enable ();
+		slidePanelIn ();
+		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
+	}
+	public void showZoomedInButtonsWOInfo(){
+		walkButtons.disable ();
+		walkButtonsWOInfo.disable ();
+		zoomedInButtons.enable ();
+		slidePanelIn ();
+		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
+	}
+	public void showWalkButtonsWOInfo(){
+		zoomedInButtons.disable ();
+		zoomedInButtonsWOInfo.disable ();
+		walkButtons.enable ();
 		slidePanelIn ();
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
@@ -56,7 +77,7 @@ public class InterfaceController : MonoBehaviour {
 		float startX = tempRect.x;
 		if (direction){
 			startPosition = sidePanel.anchoredPosition.x;
-			endPosition = 259f;
+			endPosition = 276.8f;
 			endX = endPosition/GetComponent<CanvasScaler>().referenceResolution.x;
 		} else
 		{
@@ -97,7 +118,7 @@ public class InterfaceController : MonoBehaviour {
 
 		if (direction){
 			startPosition = infoPanel.anchoredPosition.x;
-			endPosition = 427f;
+			endPosition = 467.9f;
 		} else
 		{
 			startPosition = infoPanel.anchoredPosition.x;
@@ -113,5 +134,15 @@ public class InterfaceController : MonoBehaviour {
 		}
 		newPos.x = endPosition;
 		infoPanel.anchoredPosition = newPos;
+	}
+
+	public void switchToOSInfo(){
+		OSInfo.SetActive (true);
+		EOInfo.SetActive (false);
+	}
+
+	public void switchToEOInfo(){
+		OSInfo.SetActive (false);
+		EOInfo.SetActive (true);
 	}
 }

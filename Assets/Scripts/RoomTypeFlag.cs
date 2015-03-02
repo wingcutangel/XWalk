@@ -6,14 +6,14 @@ public class RoomTypeFlag : MonoBehaviour {
 	public RectTransform flag;
 	public GameObject walkIcons;
 	CameraPoint camPoint;
-	GameObject povCamera;
+	Camera povCamera;
 	CameraSwitch camSwitch;
 	Button FOVButton;
 	CanvasScaler theCanvasScaler;
 	// Use this for initialization
 	void Start () {
 		camPoint = GetComponentInChildren<CameraPoint> ();
-		povCamera = GetComponentInChildren<Camera> ().gameObject;
+		povCamera = GetComponentInChildren<Camera> ();
 		povCamera.gameObject.SetActive (false);
 		camSwitch = GameObject.FindGameObjectWithTag ("CameraSwitcher").GetComponent<CameraSwitch> ();
 		Button theButton = flag.gameObject.GetComponent<Button> (); 
@@ -25,19 +25,19 @@ public class RoomTypeFlag : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		if (Camera.main) {
 
 			Vector3 screenPos = Camera.main.WorldToScreenPoint (transform.position);
 			float scaleFactorX = theCanvasScaler.referenceResolution.x / Screen.width;
-			float scaleFactorY = theCanvasScaler.referenceResolution.y / Screen.height;
+//			float scaleFactorY = theCanvasScaler.referenceResolution.y / Screen.height;
 			flag.anchoredPosition = new Vector2(screenPos.x * scaleFactorX, screenPos.y * scaleFactorX);
 		}
 	}
 
 	public void focus(){
 		Camera.main.GetComponent<OrbitCamera> ().switchFocusPoint (camPoint);
-		camSwitch.execCam = povCamera.GetComponent<Camera> ();
+		camSwitch.execCam = povCamera;
 		if (walkIcons) {
 			walkIcons.SetActive (true);
 		}

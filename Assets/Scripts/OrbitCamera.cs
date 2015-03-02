@@ -89,18 +89,19 @@ public class OrbitCamera : MonoBehaviour
 		_xtarget += -gyroRotationRate.y * 0.2f;
 		_ytarget += -gyroRotationRate.x * 0.15f;
 
-		if(Input.touchCount > 0){ //if there is any touch
-			touchDuration += Time.deltaTime;
-			touch = Input.GetTouch(0);
-			
-			if(touch.phase == TouchPhase.Ended && touchDuration < 0.2f) //making sure it only check the touch once && it was a short touch/tap and not a dragging.
-				StartCoroutine("singleOrDouble");
-		}
-		else
-			touchDuration = 0.0f;
+		if (Input.touchCount > 0) { //if there is any touch
+//			touchDuration += Time.deltaTime;
+//			touch = Input.GetTouch(0);
+//			
+//			if(touch.phase == TouchPhase.Ended && touchDuration < 0.2f) //making sure it only check the touch once && it was a short touch/tap and not a dragging.
+////				StartCoroutine("singleOrDouble");
+//		}
+//		else
+//			touchDuration = 0.0f;
 		
-		RotateControls();
-		Zoom();
+			RotateControls ();
+			Zoom ();
+		}
 		
 		Rotate ();
 	}
