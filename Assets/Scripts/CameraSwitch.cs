@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraSwitch : MonoBehaviour {
 	public Camera mainCam;
-	public Camera execCam;
+	public GameObject execCam;
 	public Animator screenFader;
 	public GameObject WalkCamPrefab;
 	public GameObject walkControls;

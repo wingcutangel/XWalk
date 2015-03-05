@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: f1afd7aca57bd944e8a687d34b7861a4
-timeCreated: 1425556789
+guid: 5f6a2e89d13f8d84b9026155abca8028
+timeCreated: 1425390064
 licenseType: Pro
 TextureImporter:
-  fileIDToRecycleName:
-    8900000: generatedCubemap
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -22,35 +21,35 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 6
-  cubemapConvolution: 1
+  generateCubemap: 0
+  cubemapConvolution: 0
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
-  seamlessCubemap: 1
-  textureFormat: -3
+  seamlessCubemap: 0
+  textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: 2
-    aniso: 3
-    mipBias: 0
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
     wrapMode: 1
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
-  compressionQuality: 100
-  spriteMode: 0
+  compressionQuality: 50
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: 3
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
     sprites: []
-  spritePackingTag: 
+  spritePackingTag: GUI
   userData: 
   assetBundleName: 
   assetBundleVariant: 

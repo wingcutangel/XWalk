@@ -52,7 +52,9 @@ public class IdleScript : MonoBehaviour {
 
 	public void openAbout(){
 		cgs.enable ();
-		StartCoroutine (Camera.main.GetComponent<OrbitCamera> ().autoOrbit (3f));
+		if (Camera.main.GetComponent<OrbitCamera> ()) {
+			StartCoroutine (Camera.main.GetComponent<OrbitCamera> ().autoOrbit (3f));
+		}
 		updateTimer -= countTime;
 		updateTimer += closeAbout;
 	}

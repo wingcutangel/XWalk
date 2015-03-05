@@ -4,24 +4,24 @@ using System.Collections;
 
 public class RoomTypeFlag : MonoBehaviour {
 	public RectTransform flag;
-	public GameObject walkIcons;
 	CameraPoint camPoint;
-	Camera povCamera;
+	GameObject povCamera;
 	CameraSwitch camSwitch;
 	Button FOVButton;
 	CanvasScaler theCanvasScaler;
+
+	private float scaleFactorX;
 	// Use this for initialization
 	void Start () {
 		camPoint = GetComponentInChildren<CameraPoint> ();
-		povCamera = GetComponentInChildren<Camera> ();
+		povCamera = transform.FindChild("POVCamera").gameObject;
 		povCamera.gameObject.SetActive (false);
 		camSwitch = GameObject.FindGameObjectWithTag ("CameraSwitcher").GetComponent<CameraSwitch> ();
 		Button theButton = flag.gameObject.GetComponent<Button> (); 
 		theButton.onClick.AddListener (focus);
 		theCanvasScaler = GameObject.FindGameObjectWithTag ("MainCanvas").GetComponent<CanvasScaler> () as CanvasScaler;
-		if (walkIcons){
-			walkIcons.SetActive (false);
-		}
+//		scaleFactorX = theCanvasScaler.referenceResolution.x / 1280f;//Screen.width;
+		scaleFactorX = theCanvasScaler.referenceResolution.x / 1920f;//Screen.width;
 	}
 	
 	// Update is called once per frame
@@ -29,7 +29,6 @@ public class RoomTypeFlag : MonoBehaviour {
 		if (Camera.main) {
 
 			Vector3 screenPos = Camera.main.WorldToScreenPoint (transform.position);
-			float scaleFactorX = theCanvasScaler.referenceResolution.x / Screen.width;
 //			float scaleFactorY = theCanvasScaler.referenceResolution.y / Screen.height;
 			flag.anchoredPosition = new Vector2(screenPos.x * scaleFactorX, screenPos.y * scaleFactorX);
 		}
@@ -38,8 +37,5 @@ public class RoomTypeFlag : MonoBehaviour {
 	public void focus(){
 		Camera.main.GetComponent<OrbitCamera> ().switchFocusPoint (camPoint);
 		camSwitch.execCam = povCamera;
-		if (walkIcons) {
-			walkIcons.SetActive (true);
-		}
 	}
 }

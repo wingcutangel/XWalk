@@ -7,12 +7,12 @@ PlayerSettings:
   AndroidProfiler: 0
   defaultScreenOrientation: 3
   targetDevice: 2
-  targetGlesGraphics: 2
+  targetGlesGraphics: -1
   targetIOSGraphics: -1
   targetResolution: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: XWalk2
+  companyName: WORKROOM
+  productName: XWalk
   cloudProjectId: 
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -28,7 +28,7 @@ PlayerSettings:
   m_UseDX11: 0
   m_Stereoscopic3D: 0
   iosShowActivityIndicatorOnLoading: -1
-  androidShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: 2
   iosAppInBackgroundBehavior: 0
   displayResolutionDialog: 1
   allowedAutorotateToPortrait: 0
@@ -74,7 +74,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.Workroom.XWalk2
+  bundleIdentifier: com.Workroom.XWalk
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0

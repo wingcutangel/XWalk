@@ -13,8 +13,8 @@ public class CanvasGroupState : MonoBehaviour {
 	}
 	
 	public void enable(){
-		cg.blocksRaycasts = true;
-		cg.interactable = true;
+//		gameObject.SetActive (true);
+
 		StopCoroutine ("lerpUp");
 		StopCoroutine ("lerpDown");
 		StartCoroutine ("lerpUp");
@@ -37,6 +37,8 @@ public class CanvasGroupState : MonoBehaviour {
 			yield return null;
 		}
 		cg.alpha = to;
+		cg.blocksRaycasts = true;
+		cg.interactable = true;
 	}
 
 	private IEnumerator lerpDown(){
@@ -48,5 +50,6 @@ public class CanvasGroupState : MonoBehaviour {
 			yield return null;
 		}
 		cg.alpha = to;
+//		gameObject.SetActive (false);
 	}
 }

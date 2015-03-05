@@ -17,6 +17,11 @@ public class InterfaceController : MonoBehaviour {
 	public CanvasGroupState walkButtonsWOInfo;
 	public GameObject EOInfo;
 	public GameObject OSInfo;
+
+	void Start(){
+//		Screen.SetResolution(1280, 800, true);
+		Screen.SetResolution(1920, 1080, true);
+	}
 	// Use this for initialization
 	public void returnToMenu(){
 		mainCamera.switchFocusPoint (mapView);

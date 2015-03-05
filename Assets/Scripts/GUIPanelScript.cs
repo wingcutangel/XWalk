@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class GUIPanelScript : MonoBehaviour {
-	private bool cameraReduced = false;
 	public RectTransform infoPanel;
 	public CanvasGroupState[] stateControllers;
 	private int activePanelGroup = -1;
