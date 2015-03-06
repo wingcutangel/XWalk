@@ -70,13 +70,7 @@ public class OrbitCamera : MonoBehaviour
 		StartCoroutine(autoOrbit(3f));
 	}
 
-//	void Awake()
-//	{
-//		RotateControls();
-//		Zoom();
-//		Rotate();
-//	}
-	
+
 	/**
   * Rotate the camera or zoom depending on the input of the player.
   */
@@ -88,71 +82,35 @@ public class OrbitCamera : MonoBehaviour
 		Vector3 gyroRotationRate = Input.gyro.rotationRateUnbiased;
 		_xtarget += -gyroRotationRate.y * 0.2f;
 		_ytarget += -gyroRotationRate.x * 0.15f;
-
-		if (Input.touchCount > 0) { //if there is any touch
-//			touchDuration += Time.deltaTime;
-//			touch = Input.GetTouch(0);
-//			
-//			if(touch.phase == TouchPhase.Ended && touchDuration < 0.2f) //making sure it only check the touch once && it was a short touch/tap and not a dragging.
-////				StartCoroutine("singleOrDouble");
-//		}
-//		else
-//			touchDuration = 0.0f;
-		
-			RotateControls ();
-			Zoom ();
-		}
-		
+				
+		RotateControls ();
+		Zoom ();		
 		Rotate ();
 	}
 
-	
-	IEnumerator singleOrDouble(){
-		yield return new WaitForSeconds(0.3f);
-		if(touch.tapCount == 2)
-		{
-			//this coroutine has been called twice. We should stop the next one here otherwise we get two double tap
-			StopCoroutine("singleOrDouble");
-			Ray ray = Camera.main.ScreenPointToRay(touch.position);
-			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit)){
-				switchFocusPoint(hit.point);
-				if (customCamera){
-					CameraPoint cp = _target.GetComponent<CameraPoint>();
-					_maxDistance = cp.maxDistance;
-					_minDistance = cp.minDistance;
-					_highAngle = cp.maxAngle;
-					_lowAngle = cp.minAngle;
-					customCamera = false;
-				}
-			}
-		}
-	}
-	
 	/**
   * Rotate the camera when the first button of the mouse is pressed.
   * 
   */
 	void RotateControls()
 	{
-//		if ( GUIUtility.hotControl == 0 && Input.GetButton("Fire1") && cameraFree == true)
-		if ( GUIUtility.hotControl == 0 && Input.touchCount == 1 )//&& cameraFree == true)
-		{
+		if (Input.touchCount == 1) {
 			bAutoOrbit = false;
-#if UNITY_ANDROID
-			_dx = Input.GetTouch(0).deltaPosition.x/10  * _xSpeed * Time.deltaTime * 20;
-			_dy = -Input.GetTouch(0).deltaPosition.y/10 * _ySpeed * Time.deltaTime * 20;
-#endif
-#if (!UNITY_ANDROID)
 
-			_dx = Input.GetAxis("Mouse X") * _xSpeed;
-			_dy = -Input.GetAxis("Mouse Y")* _ySpeed;
-#endif
+			_dx = Input.GetTouch (0).deltaPosition.x / 10 * _xSpeed * Time.deltaTime * 20;
+			_dy = -Input.GetTouch (0).deltaPosition.y / 10 * _ySpeed * Time.deltaTime * 20;
+		} else {
+			if (Input.GetButton ("Fire1")) {
+				bAutoOrbit = false;
+				_dx = Input.GetAxis ("Mouse X") * _xSpeed;
+				_dy = -Input.GetAxis ("Mouse Y") * _ySpeed;
+			}
+		}
+
 			_xtarget += _dx;
 			_ytarget += _dy;
 			_dx =_dy= 0f;
 
-		}
 	}
 
 	void Rotate()
@@ -217,7 +175,6 @@ public class OrbitCamera : MonoBehaviour
 	{
 		if (cameraFree == true)
 		{
-#if UNITY_ANDROID
 			if (Input.touchCount > 1)
 			{
 				Touch touchZero = Input.GetTouch(0);
@@ -242,18 +199,16 @@ public class OrbitCamera : MonoBehaviour
 				{
 					zoomTarget += _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
 				}
+			} else {
+				if ( Input.GetAxis("Mouse ScrollWheel") > 0.0f )
+				{
+					zoomTarget -= _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
+				}
+				else if ( Input.GetAxis("Mouse ScrollWheel") < 0.0f )
+				{
+					zoomTarget += _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
+				}
 			}
-#endif
-#if (!UNITY_ANDROID)
-			if ( Input.GetAxis("Mouse ScrollWheel") > 0.0f )
-			{
-				zoomTarget -= _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
-			}
-			else if ( Input.GetAxis("Mouse ScrollWheel") < 0.0f )
-			{
-				zoomTarget += _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
-			}
-#endif
 
 			zoomTarget = Mathf.Clamp(zoomTarget , _minDistance - _distance, _maxDistance - _distance);
 		}

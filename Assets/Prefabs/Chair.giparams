@@ -7,7 +7,7 @@ LightmapParameters:
   m_PrefabInternal: {fileID: 0}
   m_Name: Chair
   serializedVersion: 3
-  resolution: .5
+  resolution: .800000012
   clusterResolution: .5
   irradianceBudget: 128
   irradianceQuality: 8192

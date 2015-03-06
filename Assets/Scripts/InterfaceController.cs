@@ -18,6 +18,8 @@ public class InterfaceController : MonoBehaviour {
 	public GameObject EOInfo;
 	public GameObject OSInfo;
 
+	public GoogleAnalyticsV3 googleAnalytics;
+
 	void Start(){
 //		Screen.SetResolution(1280, 800, true);
 		Screen.SetResolution(1920, 1080, true);
