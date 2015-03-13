@@ -5,9 +5,9 @@ PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
   AndroidProfiler: 0
-  defaultScreenOrientation: 3
+  defaultScreenOrientation: 4
   targetDevice: 2
-  targetGlesGraphics: -1
+  targetGlesGraphics: 2
   targetIOSGraphics: -1
   targetResolution: 0
   accelerometerFrequency: 60
@@ -33,10 +33,10 @@ PlayerSettings:
   displayResolutionDialog: 1
   allowedAutorotateToPortrait: 0
   allowedAutorotateToPortraitUpsideDown: 0
-  allowedAutorotateToLandscapeRight: 0
+  allowedAutorotateToLandscapeRight: 1
   allowedAutorotateToLandscapeLeft: 1
   useOSAutorotation: 1
-  use32BitDisplayBuffer: 0
+  use32BitDisplayBuffer: 1
   disableDepthAndStencilBuffers: 0
   defaultIsFullScreen: 1
   defaultIsNativeResolution: 1
@@ -255,7 +255,7 @@ PlayerSettings:
     1: CROSS_PLATFORM_INPUT
     2: CROSS_PLATFORM_INPUT
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
-    7: 
+    7: MOBILE_INPUT
     14: MOBILE_INPUT
     15: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     16: CROSS_PLATFORM_INPUT;MOBILE_INPUT
@@ -388,7 +388,7 @@ PlayerSettings:
   WebGL::ScriptingBackend: 1
   WebGL::audioCompressionFormat: 4
   WebGL::exceptionSupport: 0
-  WebGL::memorySize: 256
+  WebGL::memorySize: 1024
   iOS::Architecture: 2
   iOS::ScriptingBackend: 0
   boolPropertyNames:

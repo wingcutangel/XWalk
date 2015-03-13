@@ -32,12 +32,12 @@ public class OrbitCamera : MonoBehaviour
 	private float _dx = 0.0f;
 	private float _dy = 0.0f;
 	private bool cameraFree = true;
-	private bool customCamera = false;
 	private bool bAutoOrbit;
-		
+	private bool hasGyro;	
 	//Distance vector. 
 	private Vector3 _distanceVector;
 	private Vector3 _focusPosition;
+	private Gyroscope gyro;
 
 	/**
   * Move the camera to its initial position.
@@ -65,12 +65,26 @@ public class OrbitCamera : MonoBehaviour
 //		_distance = .75f * _maxDistance;
 		_distanceVector = new Vector3(0.0f,0.0f,-_distance);
 		_focusPosition = _target.transform.position;
-
-		Input.gyro.enabled = true;
+		hasGyro = SystemInfo.supportsGyroscope;
+		if (hasGyro) {
+			Input.gyro.enabled = true;
+			gyro = Input.gyro;
+		}
 		StartCoroutine(autoOrbit(3f));
 	}
 
+	void OnEnable() {
+		if (hasGyro) {
+			Input.gyro.enabled = true;
+			gyro = Input.gyro;
+		}
+	}
 
+	void OnDisable() {
+		if (hasGyro) {
+			Input.gyro.enabled = false;
+		}
+	}
 	/**
   * Rotate the camera or zoom depending on the input of the player.
   */
@@ -79,10 +93,11 @@ public class OrbitCamera : MonoBehaviour
 
 	void Update()
 	{
-		Vector3 gyroRotationRate = Input.gyro.rotationRateUnbiased;
-		_xtarget += -gyroRotationRate.y * 0.2f;
-		_ytarget += -gyroRotationRate.x * 0.15f;
-				
+		if (hasGyro) {
+			Vector3 gyroRotationRate = gyro.rotationRateUnbiased;
+			_xtarget += -gyroRotationRate.y * 0.2f;
+			_ytarget += -gyroRotationRate.x * 0.15f;
+		}
 		RotateControls ();
 		Zoom ();		
 		Rotate ();
@@ -94,19 +109,20 @@ public class OrbitCamera : MonoBehaviour
   */
 	void RotateControls()
 	{
+#if UNITY_ANDROID
 		if (Input.touchCount == 1) {
 			bAutoOrbit = false;
 
 			_dx = Input.GetTouch (0).deltaPosition.x / 10 * _xSpeed * Time.deltaTime * 20;
 			_dy = -Input.GetTouch (0).deltaPosition.y / 10 * _ySpeed * Time.deltaTime * 20;
-		} else {
+		} 
+#else
 			if (Input.GetButton ("Fire1")) {
 				bAutoOrbit = false;
 				_dx = Input.GetAxis ("Mouse X") * _xSpeed;
 				_dy = -Input.GetAxis ("Mouse Y") * _ySpeed;
-			}
 		}
-
+#endif
 			_xtarget += _dx;
 			_ytarget += _dy;
 			_dx =_dy= 0f;
@@ -115,7 +131,8 @@ public class OrbitCamera : MonoBehaviour
 
 	void Rotate()
 	{
-		_distanceVector = new Vector3(0.0f,0.0f,-_distance);
+//		_distanceVector = new Vector3(0.0f,0.0f,-_distance);
+		_distanceVector.z = -_distance;
 //		if (cameraFree)
 //		{
 			float dTime = Time.deltaTime;
@@ -138,7 +155,7 @@ public class OrbitCamera : MonoBehaviour
 			newDistance = Mathf.Clamp(newDistance, _minDistance, _maxDistance);
 
 			_distance = newDistance;
-			_distanceVector = new Vector3(0.0f,0.0f,-_distance);
+		_distanceVector.z = -_distance;
 			if (zoomTarget < 0.01f && zoomTarget > -0.01f){
 				zoomTarget = 0f;
 			}
@@ -175,6 +192,7 @@ public class OrbitCamera : MonoBehaviour
 	{
 		if (cameraFree == true)
 		{
+#if UNITY_ANDROID
 			if (Input.touchCount > 1)
 			{
 				Touch touchZero = Input.GetTouch(0);
@@ -185,21 +203,22 @@ public class OrbitCamera : MonoBehaviour
 				Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
 				
 				// Find the magnitude of the vector (the distance) between the touches in each frame.
-				float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-				float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+				float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).sqrMagnitude;
+				float touchDeltaMag = (touchZero.position - touchOne.position).sqrMagnitude;
 
 				// Find the difference in the distances between each frame.
 				float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
 				if ( deltaMagnitudeDiff < 0.0f )
 				{
-					zoomTarget -= _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
+					zoomTarget -= _zoomStep/3f * (_focusPosition - transform.position).sqrMagnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
 				}
 				else if ( deltaMagnitudeDiff > 0.0f )
 				{
-					zoomTarget += _zoomStep/3f * (_focusPosition - transform.position).magnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
+					zoomTarget += _zoomStep/3f * (_focusPosition - transform.position).sqrMagnitude / (100f) * Mathf.Abs (deltaMagnitudeDiff) * 20f * Time.deltaTime;
 				}
-			} else {
+			}
+#else
 				if ( Input.GetAxis("Mouse ScrollWheel") > 0.0f )
 				{
 					zoomTarget -= _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
@@ -208,11 +227,11 @@ public class OrbitCamera : MonoBehaviour
 				{
 					zoomTarget += _zoomStep * (_focusPosition - transform.position).magnitude / (100f);
 				}
+#endif
 			}
-
 			zoomTarget = Mathf.Clamp(zoomTarget , _minDistance - _distance, _maxDistance - _distance);
-		}
 	}
+
 
 	public IEnumerator autoOrbit(float speed){
 		bAutoOrbit = true;
@@ -257,7 +276,6 @@ public class OrbitCamera : MonoBehaviour
 	}
 
 	IEnumerator moveCameraFocus(CameraPoint newPoint){
-		customCamera = true;
 		_maxDistance = Mathf.Max(newPoint.maxDistance,_maxDistance);
 		_minDistance = Mathf.Min(newPoint.minDistance, _minDistance);
 		_highAngle = Mathf.Max(newPoint.maxAngle, _highAngle);

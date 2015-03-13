@@ -23,6 +23,7 @@ public class InterfaceController : MonoBehaviour {
 	void Start(){
 //		Screen.SetResolution(1280, 800, true);
 		Screen.SetResolution(1920, 1080, true);
+		Application.targetFrameRate = 30;
 	}
 	// Use this for initialization
 	public void returnToMenu(){
@@ -41,6 +42,7 @@ public class InterfaceController : MonoBehaviour {
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
 	public void showWalkButtons(){
+		googleAnalytics.LogEvent("XWalk", "Interface", "Walk", 1);
 		zoomedInButtons.disable ();
 		zoomedInButtonsWOInfo.disable ();
 		walkButtons.enable ();
@@ -48,6 +50,7 @@ public class InterfaceController : MonoBehaviour {
 		GetComponent<GUIPanelScript> ().switchToPinGroup (-1);
 	}
 	public void showZoomedInButtonsWOInfo(){
+		googleAnalytics.LogEvent("XWalk", "Interface", "Walk", 1);
 		walkButtons.disable ();
 		walkButtonsWOInfo.disable ();
 		zoomedInButtonsWOInfo.enable ();
@@ -109,6 +112,8 @@ public class InterfaceController : MonoBehaviour {
 	}
 
 	public void infoPanelOut(){
+		googleAnalytics.LogEvent("XWalk", "Interface", "Info Panel", 1);
+
 		StopCoroutine("IEinfoPanelOut");
 		StartCoroutine("IEinfoPanelOut", true);
 	}

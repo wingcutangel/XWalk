@@ -9,10 +9,11 @@ public class RoomTypeFlag : MonoBehaviour {
 	CameraSwitch camSwitch;
 	Button FOVButton;
 	CanvasScaler theCanvasScaler;
-
+	Vector2 tempVector;
 	private float scaleFactorX;
 	// Use this for initialization
 	void Start () {
+		tempVector = new Vector2 ();
 		camPoint = GetComponentInChildren<CameraPoint> ();
 		povCamera = transform.FindChild("POVCamera").gameObject;
 		povCamera.gameObject.SetActive (false);
@@ -30,7 +31,9 @@ public class RoomTypeFlag : MonoBehaviour {
 
 			Vector3 screenPos = Camera.main.WorldToScreenPoint (transform.position);
 //			float scaleFactorY = theCanvasScaler.referenceResolution.y / Screen.height;
-			flag.anchoredPosition = new Vector2(screenPos.x * scaleFactorX, screenPos.y * scaleFactorX);
+			tempVector.x = screenPos.x * scaleFactorX;
+			tempVector.y = screenPos.y * scaleFactorX;
+			flag.anchoredPosition = tempVector;
 		}
 	}
 

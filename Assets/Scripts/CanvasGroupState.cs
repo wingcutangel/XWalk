@@ -21,6 +21,7 @@ public class CanvasGroupState : MonoBehaviour {
 	}
 
 	public void disable(){
+
 		cg.blocksRaycasts = false;
 		cg.interactable = false;
 		StopCoroutine ("lerpUp");
